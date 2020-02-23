@@ -8,59 +8,81 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-    let delegate = UIApplication.shared.delegate as! AppDelegate
-    var turnOffLog: Bool?
-
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    @IBOutlet weak var profileImg: UIImageView!
+    @IBOutlet weak var cameraButton: UIButton!
+    @IBOutlet weak var textDescript: UILabel!
+    @IBOutlet weak var editButton: UIButton!
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        //print(editButton.frame)
+        //view еще не был создан, информации о editButton нет на данный момент
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        turnOffLog = delegate.turnOffLog
-        // Do any additional setup after loading the view.
-    }
+        profileImg.layer.cornerRadius =  cameraButton.frame.width/2.0
+        
+        cameraButton.layer.cornerRadius = cameraButton.frame.width/2.0
+        
+        textDescript.textColor = UIColor.gray
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if turnOffLog == false {
-            print("View is from <Disappeared> or <Disappearing> to <Appearing>: \(#function)\n")
-        }
+        editButton.layer.borderWidth = 2
+        editButton.layer.borderColor = UIColor.black.cgColor
+        editButton.layer.cornerRadius = 10
+
+        print(editButton.frame)//Значения x,y,height,width  высчитаны autolayout'ом как значения для устройства, используемого в storyboard
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if turnOffLog == false {
-            print("View is from <Appearing> to <Appeared>: \(#function)\n")
-        }
+        print(editButton.frame)//Значения x,y,height,width высчитаны autolayout'ом как значения для устройства, используемого в simulator
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        if turnOffLog == false {
-            print("View is from <Appearing> to <Appeared>, goes between <viewWillAppear> and <viewDidAppear>: \(#function)\n")
+    func camera() {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = UIImagePickerController.SourceType.camera
+            imagePicker.allowsEditing = false
+            self.present(imagePicker, animated: true, completion: nil)
         }
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        if turnOffLog == false {
-            print("View is from <Appearing> to <Appeared>, goes between <viewWillAppear> and <viewDidAppear>: \(#function)\n")
-        }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        if turnOffLog == false {
-            print("View is from <Appearing> or <Appeared> to <Disappearing>: \(#function)\n")
-        }
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        if turnOffLog == false {
-            print("View is from <Disappearing> to <Disappeared>: \(#function)\n")
-        }
-    }
 
+    }
+    
+    func photoLibrary() {
+        let myPickerController = UIImagePickerController()
+        myPickerController.delegate = self
+        myPickerController.sourceType = UIImagePickerController.SourceType.photoLibrary
+        myPickerController.allowsEditing = false
+        self.present(myPickerController, animated: true, completion: nil)
 
+    }
+    
+    @IBAction func chooseImg(_ sender: UIButton) {
+        if sender.tag == 1 {
+            print("Выберите изображение профиля\n")
+            let ac = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            ac.addAction(UIAlertAction(title: "Take Photo", style: .default, handler: {(alert:UIAlertAction!) -> Void in self.camera()}))
+            ac.addAction(UIAlertAction(title: "Choose Photo", style: .default, handler: {(alert:UIAlertAction!) -> Void in self.photoLibrary()}))
+            present(ac, animated: true, completion: nil)
+            ac.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
+
+        }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            profileImg.contentMode = .scaleAspectFill
+            profileImg.image = pickedImage
+        }
+        picker.dismiss(animated: true, completion: nil)
+    }
 }
 
