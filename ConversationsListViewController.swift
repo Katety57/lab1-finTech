@@ -50,6 +50,12 @@ class ConversationsListViewController: UITableViewController {
 // MARK - UITableViewdelegate, datasource
 
 extension ConversationsListViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 50
+    }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
@@ -90,7 +96,6 @@ extension ConversationsListViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return section == 0 ? "Online" : "History"
     }
-    
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedConversation = array[indexPath.section][indexPath.row]
