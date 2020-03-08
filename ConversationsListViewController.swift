@@ -27,7 +27,7 @@ class ConversationsListViewController: UITableViewController {
          ConversationCell(name: "Justin", message: "", date: Date.init(timeIntervalSinceReferenceDate: 100000), isOnline: true, hasUnreadMessage: false),
          ConversationCell(name: "Camila", message: "Morning", date: Date.init(timeIntervalSinceNow: -100000), isOnline: true, hasUnreadMessage: true),
          ConversationCell(name: "Cardi", message: "South of the border", date: Date.init(timeIntervalSinceNow: -400), isOnline: true, hasUnreadMessage: false),
-         ConversationCell(name: "Shawn", message: "There is nothing holding me back", date: Date.init(timeIntervalSinceNow: -6400), isOnline: true, hasUnreadMessage: false),
+         ConversationCell(name: "Shawn", message: "There is nothing holding me back,nothing holding me back,nothing holding me back,nothing holding me back,nothing holding me back,nothing holding me back", date: Date.init(timeIntervalSinceNow: -6400), isOnline: true, hasUnreadMessage: false),
          ConversationCell(name: "Lauv", message: "Feelings", date: Date(), isOnline: true, hasUnreadMessage: true),
          ConversationCell(name: "Sam", message: "Dancing with a stranger", date: Date(), isOnline: true, hasUnreadMessage: true),
          ConversationCell(name: "Nicki", message: "", date: Date.init(timeIntervalSinceReferenceDate: 700000), isOnline: true, hasUnreadMessage: false)],
@@ -76,7 +76,7 @@ extension ConversationsListViewController {
         
         cell.nameLabel.text = array[indexPath.section][indexPath.row].name
         cell.messageLabel.text = array[indexPath.section][indexPath.row].message.isEmpty ? "No message yet" : array[indexPath.section][indexPath.row].message
-        
+
         array[indexPath.section][indexPath.row].hasUnreadMessage ? cell.messageLabel.font = UIFont.boldSystemFont(ofSize: 18.0) : cell.noMsg(flag: array[indexPath.section][indexPath.row].isOnline)
         
         
