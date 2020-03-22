@@ -7,8 +7,22 @@
 //
 
 import UIKit
+import Firebase
 
 private let reuseIdentifier: String = "conversationCell"
+
+struct Channel {
+    var identifier: String
+    var name: String
+    var lastMessage: String
+}
+
+struct Message {
+    var content: String
+    var created: Date
+    var senderId: String
+    var sennderName: String
+}
 
 class ConversationsListViewController: UITableViewController {
     
@@ -19,6 +33,9 @@ class ConversationsListViewController: UITableViewController {
         let isOnline: Bool
         let hasUnreadMessage: Bool
     }
+    
+    private lazy var db = Firestore.firestore()
+    private lazy var ref = db.collection("channels")
     
     var array: [[ConversationCell]] = [
         [ConversationCell(name: "Ari", message: "Hello", date: Date(), isOnline: true, hasUnreadMessage: true),
@@ -99,15 +116,20 @@ extension ConversationsListViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedConversation = array[indexPath.section][indexPath.row]
-        //performSegue(withIdentifier: "showConversation", sender: nil)
+        performSegue(withIdentifier: "showConversation", sender: nil)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        /*if segue.identifier == "showConversation" {
+        if segue.identifier == "showConversation" {
             let conversation = segue.destination as! ConversationViewController
-            if let text = selectedConversation{
-                conversation.selectedConversation = text
+            conversation.channel = Channel(identifier: "71832579854", name: "", lastMessage: "")
+            ref.addSnapshotListener { [weak self] snapshot, error in
+                if var s = conversation.select { s = snapshot!.documents[0].documentID
+                    print(s)
+                }
+//                conversation.channel = Channel(identifier: "71832579854", name: "", lastMessage: "")
+                
             }
-        }*/
+        }
     }
 }

@@ -7,14 +7,40 @@
 //
 
 import UIKit
+import Firebase
 
-class ConversationViewController: UITableViewController {
-    
+class ConversationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var selectedConversation: ConversationsListViewController.ConversationCell?
+    var select: String?
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+
+        // Configure the cell...
+
+        return cell
+    }
+    
+    
+    var channel:  Channel?
+    private lazy var db = Firestore.firestore()
+    private lazy var reference: CollectionReference = {
+        print(self.channel?.identifier)
+        guard let channelIdentifier = channel?.identifier else { fatalError() }
+        return db.collection("channels").document(channelIdentifier).collection("messages")
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = selectedConversation?.name
+        //self.navigationItem.title = selectedConversation?.name
+        print(select)
+        reference.addSnapshotListener{[weak self] snapshot, error in
+            print(snapshot?.documents)
+        }
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -23,26 +49,6 @@ class ConversationViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
-    }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
 
     /*
     // Override to support conditional editing of the table view.

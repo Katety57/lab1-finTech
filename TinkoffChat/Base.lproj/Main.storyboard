@@ -259,7 +259,7 @@
                                     <outlet property="dateLabel" destination="S44-jE-PNl" id="7xZ-sC-IEg"/>
                                     <outlet property="messageLabel" destination="UuN-DQ-eWr" id="Idn-uz-vrV"/>
                                     <outlet property="nameLabel" destination="dAJ-fw-K6q" id="QZV-jl-nX1"/>
-                                    <segue destination="xpT-IK-mBv" kind="show" id="P4C-W2-Lwh"/>
+                                    <segue destination="xpT-IK-mBv" kind="show" identifier="showConversation" id="P4C-W2-Lwh"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -280,21 +280,35 @@
             </objects>
             <point key="canvasLocation" x="3361.875" y="-473.23943661971833"/>
         </scene>
-        <!--View Controller-->
+        <!--Conversation View Controller-->
         <scene sceneID="HHm-i3-22S">
             <objects>
-                <viewController id="xpT-IK-mBv" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="toJ-RQ-hSr" customClass="ConversationViewComtroller">
+                <viewController id="xpT-IK-mBv" customClass="ConversationViewController" customModule="TinkoffChat" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="toJ-RQ-hSr">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="uic-CT-lCt">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="uic-CT-lCt" firstAttribute="bottom" secondItem="toJ-RQ-hSr" secondAttribute="bottom" id="G1Q-mh-Y7H"/>
+                            <constraint firstItem="uic-CT-lCt" firstAttribute="leading" secondItem="WmM-yP-uUc" secondAttribute="leading" id="IUb-zU-zae"/>
+                            <constraint firstItem="uic-CT-lCt" firstAttribute="centerY" secondItem="toJ-RQ-hSr" secondAttribute="centerY" id="dXc-ad-izC"/>
+                            <constraint firstItem="uic-CT-lCt" firstAttribute="centerX" secondItem="toJ-RQ-hSr" secondAttribute="centerX" id="eDq-SQ-jXR"/>
+                            <constraint firstItem="uic-CT-lCt" firstAttribute="top" secondItem="toJ-RQ-hSr" secondAttribute="top" id="eGI-JC-LO7"/>
+                            <constraint firstItem="uic-CT-lCt" firstAttribute="trailing" secondItem="WmM-yP-uUc" secondAttribute="trailing" id="mwb-Xn-daL"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="WmM-yP-uUc"/>
                     </view>
                     <navigationItem key="navigationItem" id="gkx-ts-L1e"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fBL-Zt-Ymr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4314" y="-473"/>
+            <point key="canvasLocation" x="4312.5" y="-473.23943661971833"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ZI4-f9-mAp">
