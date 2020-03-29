@@ -19,6 +19,7 @@
 		CE7C8C61240BCD2800EF19E3 /* DialogTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7C8C60240BCD2800EF19E3 /* DialogTableViewCell.swift */; };
 		CE7C8C63240C2FA800EF19E3 /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7C8C62240C2FA800EF19E3 /* ConversationViewController.swift */; };
 		CE8B8598242287DB0062CE20 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE8B8597242287DB0062CE20 /* GoogleService-Info.plist */; };
+		CE9BAC952430851600F9DEF3 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9BAC942430851600F9DEF3 /* StorageManager.swift */; };
 		CEB70E3F240B100B00B1D4A0 /* ConversationsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB70E3D240B100A00B1D4A0 /* ConversationsListViewController.swift */; };
 		EC07C4A22D96E11D7A32B5DD /* Pods_TinkoffChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F55B676624BB19B499F5BA48 /* Pods_TinkoffChat.framework */; };
 /* End PBXBuildFile section */
@@ -55,6 +56,7 @@
 		CE7C8C60240BCD2800EF19E3 /* DialogTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogTableViewCell.swift; sourceTree = "<group>"; };
 		CE7C8C62240C2FA800EF19E3 /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
 		CE8B8597242287DB0062CE20 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CE9BAC942430851600F9DEF3 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		CEB70E3D240B100A00B1D4A0 /* ConversationsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversationsListViewController.swift; path = ../ConversationsListViewController.swift; sourceTree = "<group>"; };
 		F55B676624BB19B499F5BA48 /* Pods_TinkoffChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TinkoffChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -124,6 +126,7 @@
 				CE193D8223F8993A00A295F6 /* LaunchScreen.storyboard */,
 				CE193D8523F8993A00A295F6 /* Info.plist */,
 				CE193D7D23F8993900A295F6 /* TinkoffChat.xcdatamodeld */,
+				CE9BAC942430851600F9DEF3 /* StorageManager.swift */,
 			);
 			path = TinkoffChat;
 			sourceTree = "<group>";
@@ -324,6 +327,7 @@
 				CE1E80BD2411A3F60091C8BF /* ProfileViewController.swift in Sources */,
 				CE193D7F23F8993900A295F6 /* TinkoffChat.xcdatamodeld in Sources */,
 				CE193D7523F8993900A295F6 /* AppDelegate.swift in Sources */,
+				CE9BAC952430851600F9DEF3 /* StorageManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -23,7 +23,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cBg-t6-Mmf">
-                                <rect key="frame" x="20" y="370" width="280" height="32.5"/>
+                                <rect key="frame" x="20" y="370" width="280" height="18"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Александр Федоров">
                                         <attributes>
@@ -35,7 +35,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l4T-R8-ae6">
-                                <rect key="frame" x="20" y="407.5" width="280" height="50.5"/>
+                                <rect key="frame" x="20" y="393" width="280" height="50.5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="C78-7c-zB1"/>
                                 </constraints>
@@ -116,12 +116,12 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8Dn-dk-8VT">
-                                <rect key="frame" x="20" y="370" width="280" height="32.5"/>
+                                <rect key="frame" x="20" y="370" width="280" height="18"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2o6-DP-ZJO">
-                                <rect key="frame" x="20" y="407.5" width="280" height="65"/>
+                                <rect key="frame" x="20" y="393" width="280" height="65"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="65" id="x7P-s7-HgR"/>
@@ -130,55 +130,40 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FHw-vg-2I0">
-                                <rect key="frame" x="20" y="498" width="130" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ifg-KJ-esz">
+                                <rect key="frame" x="20" y="478" width="280" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="130" id="fj5-MH-gwO"/>
+                                    <constraint firstAttribute="height" constant="50" id="rbV-RI-Hbz"/>
                                 </constraints>
-                                <state key="normal" title="GCD">
+                                <state key="normal" title="Сохранить">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="pushedGCD:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fO1-PU-dqL"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="41g-P5-uSS">
-                                <rect key="frame" x="170" y="498" width="130" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="130" id="Y6e-PF-QvH"/>
-                                </constraints>
-                                <state key="normal" title="Operation">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="pushedOperation:" destination="BYZ-38-t0r" eventType="touchUpInside" id="s8i-Nz-gGp"/>
+                                    <action selector="saveData:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hVD-xN-BSo"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="cBg-t6-Mmf" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="2Je-Nx-GZ6"/>
-                            <constraint firstItem="41g-P5-uSS" firstAttribute="top" relation="greaterThanOrEqual" secondItem="2o6-DP-ZJO" secondAttribute="bottom" constant="5" id="3lp-GX-0gc"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="41g-P5-uSS" secondAttribute="bottom" constant="20" id="68A-uk-aWh"/>
                             <constraint firstItem="l4T-R8-ae6" firstAttribute="top" secondItem="8Dn-dk-8VT" secondAttribute="bottom" constant="5" id="6I2-nv-a7x"/>
                             <constraint firstItem="8Dn-dk-8VT" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="8df-HH-87T"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="2o6-DP-ZJO" secondAttribute="trailing" constant="20" id="A1b-dJ-V9Y"/>
                             <constraint firstItem="8Dn-dk-8VT" firstAttribute="top" secondItem="ZxL-dE-Ura" secondAttribute="bottom" constant="10" id="AXY-y5-VkR"/>
+                            <constraint firstAttribute="bottom" secondItem="Ifg-KJ-esz" secondAttribute="bottom" constant="20" id="Dzg-fo-5nF"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="fCr-pL-BFP" secondAttribute="trailing" constant="20" id="EGf-SV-kOw"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="cBg-t6-Mmf" secondAttribute="trailing" constant="20" id="F25-d5-gVG"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="l4T-R8-ae6" secondAttribute="trailing" constant="20" id="GcA-B5-QN4"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="41g-P5-uSS" secondAttribute="trailing" constant="20" id="KlK-x0-JrV"/>
+                            <constraint firstItem="Ifg-KJ-esz" firstAttribute="top" relation="greaterThanOrEqual" secondItem="2o6-DP-ZJO" secondAttribute="bottom" constant="20" id="Jnj-Wz-eWK"/>
                             <constraint firstItem="ZxL-dE-Ura" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="MFx-Be-Qel"/>
-                            <constraint firstItem="41g-P5-uSS" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="FHw-vg-2I0" secondAttribute="trailing" constant="20" id="MvC-r1-tM0"/>
                             <constraint firstItem="cBg-t6-Mmf" firstAttribute="top" secondItem="eQ4-HZ-idb" secondAttribute="bottom" constant="10" id="Q4j-mr-SGY"/>
                             <constraint firstAttribute="bottom" secondItem="fCr-pL-BFP" secondAttribute="bottom" constant="20" id="Rdg-LV-od2"/>
                             <constraint firstItem="l4T-R8-ae6" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="UmB-UW-Xnt"/>
                             <constraint firstItem="fCr-pL-BFP" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Uy0-Oa-USD"/>
-                            <constraint firstItem="FHw-vg-2I0" firstAttribute="top" relation="greaterThanOrEqual" secondItem="2o6-DP-ZJO" secondAttribute="bottom" constant="5" id="XBU-1p-OgN"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="FHw-vg-2I0" secondAttribute="bottom" constant="20" id="bRu-Ny-AiE"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="eQ4-HZ-idb" secondAttribute="trailing" constant="20" id="crA-ro-ySA"/>
-                            <constraint firstItem="FHw-vg-2I0" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="ftU-RS-Ni5"/>
                             <constraint firstItem="2o6-DP-ZJO" firstAttribute="top" secondItem="cBg-t6-Mmf" secondAttribute="bottom" constant="5" id="h6B-vW-W07"/>
+                            <constraint firstItem="Ifg-KJ-esz" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="jyB-ul-1HQ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Ifg-KJ-esz" secondAttribute="trailing" constant="20" id="lRJ-ao-s4X"/>
                             <constraint firstItem="ZxL-dE-Ura" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="ohg-pe-J2M"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="8Dn-dk-8VT" secondAttribute="trailing" constant="20" id="ppY-OJ-Z2Y"/>
                             <constraint firstItem="fCr-pL-BFP" firstAttribute="top" relation="greaterThanOrEqual" secondItem="l4T-R8-ae6" secondAttribute="bottom" constant="20" id="rhD-eK-hCG"/>
@@ -196,8 +181,7 @@
                         <outlet property="cameraButton" destination="eQ4-HZ-idb" id="dvd-UW-XMB"/>
                         <outlet property="editButton" destination="fCr-pL-BFP" id="pAd-HR-kXy"/>
                         <outlet property="profileImg" destination="ZxL-dE-Ura" id="O3j-cI-pyP"/>
-                        <outlet property="saveGCD" destination="FHw-vg-2I0" id="dBo-WM-rLh"/>
-                        <outlet property="saveOperation" destination="41g-P5-uSS" id="LWG-Py-a2i"/>
+                        <outlet property="saveButton" destination="Ifg-KJ-esz" id="fyA-H1-sq6"/>
                         <outlet property="textDescript" destination="l4T-R8-ae6" id="pDl-f7-X7m"/>
                         <outlet property="username" destination="cBg-t6-Mmf" id="Sfx-ee-l6t"/>
                         <outlet property="usernameTextField" destination="8Dn-dk-8VT" id="Xu4-Zr-fGh"/>
