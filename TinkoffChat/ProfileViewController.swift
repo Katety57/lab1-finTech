@@ -113,10 +113,10 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         bioIsChanged = false
         saveButton.isHidden = true
         cameraButton.isHidden = true
-        let usr = StorageManager.sharedManager.readContext()
-        username.text = usr?.value(forKey: "name") as? String
-        textDescript.text = usr?.value(forKey: "bio") as? String
-        profileImg.image = UIImage(data: usr?.value(forKey: "img") as! Data)
+        let usr = StorageManager.sharedManager.readContext(entityName: "User")
+        username.text = usr.first?.value(forKey: "name") as? String
+        textDescript.text = usr.first?.value(forKey: "bio") as? String
+        profileImg.image = UIImage(data: usr.first?.value(forKey: "img") as! Data)
     }
     
     func editorView() {
@@ -154,7 +154,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         queue.async {
             do{
                 if !usernameField.isEmpty && !bio.isEmpty {
-                    StorageManager.sharedManager.saveContext(username: usernameField, bio: bio, img: img)
+                    StorageManager.sharedManager.deleteAllData(entity: "User")
+                    StorageManager.sharedManager.saveContext(dictionary: ["name": usernameField,
+                                                                          "bio": bio,
+                                                                          "img": img],
+                                                             properties: ["name", "bio", "img"], entityName: "User")
                 }
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()

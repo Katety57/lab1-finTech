@@ -8,46 +8,117 @@
 
 import UIKit
 import Firebase
+import CoreData
 
-class ConversationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    var selectedConversation: ConversationsListViewController.ConversationCell?
-    var select: String?
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+//class Message: NSManagedObject{
+//    var senderName: String?
+//    var senderID: String?
+//    var content: String?
+//    var created: Date?
+//}
 
-        // Configure the cell...
-
-        return cell
-    }
+class ConversationViewController: UIViewController, UITableViewDelegate {
+    let tableView = UITableView()
     
-    
-    var channel:  Channel?
+    var selectedConversation: Channel?
     private lazy var db = Firestore.firestore()
     private lazy var reference: CollectionReference = {
-        print(self.channel?.identifier)
-        guard let channelIdentifier = channel?.identifier else { fatalError() }
+        guard let channelIdentifier = self.selectedConversation?.id else { fatalError() }
         return db.collection("channels").document(channelIdentifier).collection("messages")
     }()
     
+    
+    lazy var fetchedResultController: NSFetchedResultsController<Message> = {
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Message")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "created", ascending: false)]
+        fetchRequest.fetchBatchSize = 20
+        let context = StorageManager.sharedManager.context
+        let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: "Messages")
+        return frc as! NSFetchedResultsController<Message>
+    }()
+}
+
+extension ConversationViewController {
+    override func loadView() {
+        super.loadView()
+        setupTableView()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.navigationItem.title = selectedConversation?.name
-        print(select)
-        reference.addSnapshotListener{[weak self] snapshot, error in
-            print(snapshot?.documents)
-        }
+        navigationItem.title = selectedConversation?.name
+        
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "id")
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
+    
+    func setupTableView() {
+      view.addSubview(tableView)
+      tableView.translatesAutoresizingMaskIntoConstraints = false
+      tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+      tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+      tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+      tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+//        return fetchedResultController.sections?.count ?? 0
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        if let count = fetchedResultController.sections?[section].numberOfObjects {
+//            return count
+//        }
+//        return 0
+        return 10
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "id", for: indexPath)
 
+//        let message = fetchedResultController.object(at: indexPath) as Message
+        cell.textLabel?.text = "Test"
+
+        return cell
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+//        getMessages()
+    }
+    
+    func getMessages(){
+        reference.addSnapshotListener{[weak self] snapshot, error in
+            if let s = snapshot {
+                StorageManager.sharedManager.deleteAllData(entity: "Message")
+                for document in s.documents {
+                    let activity = document.get("created") as? Timestamp
+                    if let act = activity,
+                        let message = document.get("content") as? String,
+                        let name = document.get("senderName") as? String, let id = document.get("senderID") as? String {
+                        if message != "", name != ""{
+                            StorageManager.sharedManager.saveContext(dictionary: ["created" : act.dateValue(),
+                                                                              "content" : message,
+                                                                              "senderName" : name,
+                                                                              "senderID" : id],
+                                                                 properties: ["created", "content", "senderName", "senderID"], entityName: "Message")
+                        }
+                    }
+                }
+                do {
+                        try self?.fetchedResultController.performFetch()
+//                        self?.tableView.reloadData()
+                    } catch let err {
+                        print("Failed to fetch: ",err)
+                }
+            }
+        }
+    }
     // MARK: - Table view data source
 
     /*

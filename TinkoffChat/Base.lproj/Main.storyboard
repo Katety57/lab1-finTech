@@ -271,21 +271,7 @@
                     <view key="view" contentMode="scaleToFill" id="toJ-RQ-hSr">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="uic-CT-lCt">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                            </tableView>
-                        </subviews>
                         <color key="backgroundColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="uic-CT-lCt" firstAttribute="bottom" secondItem="toJ-RQ-hSr" secondAttribute="bottom" id="G1Q-mh-Y7H"/>
-                            <constraint firstItem="uic-CT-lCt" firstAttribute="leading" secondItem="WmM-yP-uUc" secondAttribute="leading" id="IUb-zU-zae"/>
-                            <constraint firstItem="uic-CT-lCt" firstAttribute="centerY" secondItem="toJ-RQ-hSr" secondAttribute="centerY" id="dXc-ad-izC"/>
-                            <constraint firstItem="uic-CT-lCt" firstAttribute="centerX" secondItem="toJ-RQ-hSr" secondAttribute="centerX" id="eDq-SQ-jXR"/>
-                            <constraint firstItem="uic-CT-lCt" firstAttribute="top" secondItem="toJ-RQ-hSr" secondAttribute="top" id="eGI-JC-LO7"/>
-                            <constraint firstItem="uic-CT-lCt" firstAttribute="trailing" secondItem="WmM-yP-uUc" secondAttribute="trailing" id="mwb-Xn-daL"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="WmM-yP-uUc"/>
                     </view>
                     <navigationItem key="navigationItem" id="gkx-ts-L1e"/>
