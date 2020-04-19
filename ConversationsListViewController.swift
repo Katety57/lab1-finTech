@@ -60,7 +60,7 @@ class ConversationsListViewController: UITableViewController {
         ConversationCell(name: "Sam", message: "Dancing with a stranger", date: Date(), isOnline: false, hasUnreadMessage: true),
         ConversationCell(name: "Nicki", message: "", date: Date.init(timeIntervalSinceReferenceDate: 700000), isOnline: false, hasUnreadMessage: false)]
     ]
-    var selectedConversation: ConversationCell?
+    var selectedConversation: Channel?
     
 }
 
@@ -115,21 +115,35 @@ extension ConversationsListViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedConversation = array[indexPath.section][indexPath.row]
+        //selectedConversation = array[indexPath.section][indexPath.row]
         performSegue(withIdentifier: "showConversation", sender: nil)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showConversation" {
             let conversation = segue.destination as! ConversationViewController
-            conversation.channel = Channel(identifier: "71832579854", name: "", lastMessage: "")
-            ref.addSnapshotListener { [weak self] snapshot, error in
-                if var s = conversation.select { s = snapshot!.documents[0].documentID
-                    print(s)
-                }
+            conversation.channel = selectedConversation
 //                conversation.channel = Channel(identifier: "71832579854", name: "", lastMessage: "")
                 
             }
         }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        //getDialog()
+    }
+    
+    func getDialog(){
+        ref.addSnapshotListener{ [weak self] snapshot, error in
+            if let s = snapshot {
+                for document in s.documents {
+                    let a = Array(document.data().values)
+                        print(a)
+//                    self?.selectedConversation = Channel(identifier: document.documentID, name: a[2] as! String, lastMessage: a[0] as! String)
+//                    self?.array.append(channel)
+                }
+//            self?.tableView.reloadData()
+            }
+        }
     }
 }
+

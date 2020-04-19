@@ -7,6 +7,13 @@
 //
 
 import UIKit
+import CoreData
+
+class User: NSManagedObject{
+    var name: String?
+    var bio: String?
+    var img: URL?
+}
 
 class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate {
     @IBOutlet weak var cameraButton: UIButton!
@@ -16,8 +23,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBOutlet weak var username: UILabel!
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var bioEditField: UITextView!
-    @IBOutlet weak var saveGCD: UIButton!
-    @IBOutlet weak var saveOperation: UIButton!
+    @IBOutlet weak var saveButton: UIButton!
     
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     var usernameIsChanged: Bool = false
@@ -39,10 +45,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         usernameTextField.isHidden = true
         bioEditField.isHidden = true
         bioEditField.delegate = self
-        saveGCD.isHidden = true
-        saveOperation.isHidden = true
         usernameTextField.addTarget(self, action: #selector(textFieldDidChange(sender:)), for: .editingChanged)
-        // Do any additional setup after loading the view.
     }
     
     func frameBtn(btnName: UIButton) {
@@ -90,15 +93,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         editorView()
     }
     
-    /*
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     func getFileURL(file: String) -> URL?{
         if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
@@ -109,8 +104,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     func profileView() {
-        saveGCD.isHidden = true
-        saveOperation.isHidden = true
         editButton.isHidden = false
         usernameTextField.isHidden = true
         bioEditField.isHidden = true
@@ -118,6 +111,12 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         textDescript.isHidden = false
         usernameIsChanged = false
         bioIsChanged = false
+        saveButton.isHidden = true
+        cameraButton.isHidden = true
+        let usr = StorageManager.sharedManager.readContext()
+        username.text = usr?.value(forKey: "name") as? String
+        textDescript.text = usr?.value(forKey: "bio") as? String
+        profileImg.image = UIImage(data: usr?.value(forKey: "img") as! Data)
     }
     
     func editorView() {
@@ -127,28 +126,24 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         textDescript.isHidden = true
         username.isHidden = true
         editButton.isHidden = true
-        
+        cameraButton.isHidden = false
         usernameTextField.isHidden = false
         usernameTextField.text = ""
         bioEditField.isHidden = false
         bioEditField.text = ""
-        saveGCD.isHidden = false
-        saveOperation.isHidden = false
+        saveButton.isHidden = false
+        saveButton.isEnabled = false
         bioEditField.layer.borderWidth = 0.5
         bioEditField.layer.borderColor = UIColor.lightGray.cgColor
         bioEditField.layer.cornerRadius = 5
         
-        frameBtn(btnName: saveGCD)
-        frameBtn(btnName: saveOperation)
-        saveGCD.isEnabled = false
-        saveOperation.isEnabled = false
+        frameBtn(btnName: saveButton)
     }
     
-    @IBAction func pushedGCD(_ sender: Any) {
+    @IBAction func saveData(_ sender: Any) {
         guard let usernameField = usernameTextField.text else { return }
         guard let bio = bioEditField.text else {return }
-        let file_user = "file_username.txt"
-        let file_bio = "file_bio.txt"
+        guard let img = profileImg.image?.pngData() else { return }
         
         self.activityIndicator.center = self.view.center
         self.activityIndicator.hidesWhenStopped = true
@@ -158,18 +153,10 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         let queue = DispatchQueue.global(qos: .utility)
         queue.async {
             do{
-                let gcdManager = GCDDataManager()
-                if self.usernameIsChanged {
-                    if let fileURL = self.getFileURL(file: file_user){
-                        gcdManager.write(jsonData: usernameField, fileURL: fileURL)
-                        }
+                if !usernameField.isEmpty && !bio.isEmpty {
+                    StorageManager.sharedManager.saveContext(username: usernameField, bio: bio, img: img)
                 }
-                if self.bioIsChanged {
-                    if let fileURL_bio = self.getFileURL(file: file_bio){
-                        gcdManager.write(jsonData: bio, fileURL: fileURL_bio)
-                    }
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
                     if usernameField.isEmpty || bio.isEmpty {
                         let alertController = UIAlertController(title: "Error", message: "Failed to save data", preferredStyle: .alert)
@@ -189,13 +176,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
                         self.present(alertController, animated: true, completion: nil)
                     }
                     self.profileView()
-                    self.saveGCD.isEnabled = false
-                    self.saveOperation.isEnabled = false
                     if !usernameField.isEmpty && !bio.isEmpty {
-                        if let user = self.getFileURL(file: file_user){ self.username.text = gcdManager.read(fileURL: user)
-                        }
-                        if let txt = self.getFileURL(file: file_bio){ self.textDescript.text = gcdManager.read(fileURL: txt)
-                        }
+                        self.profileView()
                     }
                     self.activityIndicator.stopAnimating()
                     self.usernameIsChanged = false
@@ -209,9 +191,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         if self.usernameTextField.text != self.username.text {
             usernameIsChanged = true
         }
-        if usernameIsChanged || bioIsChanged {
-            saveGCD.isEnabled = true
-            saveOperation.isEnabled = true
+        if usernameIsChanged && bioIsChanged {
+            saveButton.isEnabled = true
         }
     }
     
@@ -219,34 +200,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         if bioEditField.text != textDescript.text {
             bioIsChanged = true
         }
-        if usernameIsChanged || bioIsChanged {
-            saveGCD.isEnabled = true
-            saveOperation.isEnabled = true
+        if usernameIsChanged && bioIsChanged {
+            saveButton.isEnabled = true
         }
-    }
-    
-    @IBAction func pushedOperation(_ sender: Any) {
-        
-    }
-    
-    class GCDDataManager {
-        func read(fileURL: URL) -> String {
-            do {
-                    let text2 = try String(contentsOf: fileURL, encoding: .utf8)
-                return text2
-                }catch {print("Cann't read file")}
-            return "Error"
-        }
-        func write(jsonData:String, fileURL: URL){
-            do {
-                    try jsonData.write(to: fileURL, atomically: false, encoding: .utf8)
-                }
-                catch {print("Cann't write file")}
-        }
-    }
-    
-    class OperationDataManager {
-        func read(){}
-        func write(){}
     }
 }
