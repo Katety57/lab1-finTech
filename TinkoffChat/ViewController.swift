@@ -6,9 +6,15 @@
 //  Copyright © 2020 Tinkoff Bank. All rights reserved.
 //
 
+
+<<<<<<< HEAD
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+=======
+// lets build that app - youtube.com
 import UIKit
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+final class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+>>>>>>> Tyan_Kate_lab3
     @IBOutlet weak var profileImg: UIImageView!
     @IBOutlet weak var cameraButton: UIButton!
     @IBOutlet weak var textDescript: UILabel!
@@ -20,13 +26,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+<<<<<<< HEAD
         //print(editButton.frame)
         //view еще не был создан, информации о editButton нет на данный момент
+=======
+>>>>>>> Tyan_Kate_lab3
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        profileImg.layer.cornerRadius =  cameraButton.frame.width/2.0
+        
+        cameraButton.layer.cornerRadius = cameraButton.frame.width/2.0
+        
+        textDescript.textColor = UIColor.gray
 
+<<<<<<< HEAD
         profileImg.layer.cornerRadius =  cameraButton.frame.width/2.0
         
         cameraButton.layer.cornerRadius = cameraButton.frame.width/2.0
@@ -38,11 +54,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         editButton.layer.cornerRadius = 10
 
         print(editButton.frame)//Значения x,y,height,width  высчитаны autolayout'ом как значения для устройства, используемого в storyboard
+=======
+        editButton.layer.borderWidth = 2
+        editButton.layer.borderColor = UIColor.black.cgColor
+        editButton.layer.cornerRadius = 10
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+>>>>>>> Tyan_Kate_lab3
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+<<<<<<< HEAD
         print(editButton.frame)//Значения x,y,height,width высчитаны autolayout'ом как значения для устройства, используемого в simulator
+=======
+>>>>>>> Tyan_Kate_lab3
     }
     
     func camera() {
@@ -67,7 +95,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     @IBAction func chooseImg(_ sender: UIButton) {
         if sender.tag == 1 {
+<<<<<<< HEAD
             print("Выберите изображение профиля\n")
+=======
+>>>>>>> Tyan_Kate_lab3
             let ac = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             ac.addAction(UIAlertAction(title: "Take Photo", style: .default, handler: {(alert:UIAlertAction!) -> Void in self.camera()}))
             ac.addAction(UIAlertAction(title: "Choose Photo", style: .default, handler: {(alert:UIAlertAction!) -> Void in self.photoLibrary()}))

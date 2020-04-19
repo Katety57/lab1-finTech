@@ -15,7 +15,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+<<<<<<< HEAD
         //print("Application moved from to \(application.applicationState)")// Override point for customization after application launch.
+=======
+>>>>>>> Tyan_Kate_lab3
         return true
     }
 
