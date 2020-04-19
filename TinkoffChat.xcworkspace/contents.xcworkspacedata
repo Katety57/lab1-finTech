@@ -2,9 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:../TinkoffChat/MyPlayground.playground">
+      location = "group:TinkoffChat.xcodeproj">
    </FileRef>
    <FileRef
-      location = "self:">
+      location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>
