@@ -18,9 +18,9 @@
 		CE1E80BD2411A3F60091C8BF /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1E80BC2411A3F60091C8BF /* ProfileViewController.swift */; };
 		CE7C8C61240BCD2800EF19E3 /* DialogTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7C8C60240BCD2800EF19E3 /* DialogTableViewCell.swift */; };
 		CE7C8C63240C2FA800EF19E3 /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7C8C62240C2FA800EF19E3 /* ConversationViewController.swift */; };
-		CE8B8598242287DB0062CE20 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE8B8597242287DB0062CE20 /* GoogleService-Info.plist */; };
 		CE9BAC952430851600F9DEF3 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9BAC942430851600F9DEF3 /* StorageManager.swift */; };
 		CEB70E3F240B100B00B1D4A0 /* ConversationsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB70E3D240B100A00B1D4A0 /* ConversationsListViewController.swift */; };
+		CEEAF9A8243A3F0800FBA525 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEEAF9A7243A3F0800FBA525 /* GoogleService-Info.plist */; };
 		EC07C4A22D96E11D7A32B5DD /* Pods_TinkoffChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F55B676624BB19B499F5BA48 /* Pods_TinkoffChat.framework */; };
 /* End PBXBuildFile section */
 
@@ -55,9 +55,9 @@
 		CE1E80BC2411A3F60091C8BF /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		CE7C8C60240BCD2800EF19E3 /* DialogTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogTableViewCell.swift; sourceTree = "<group>"; };
 		CE7C8C62240C2FA800EF19E3 /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
-		CE8B8597242287DB0062CE20 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CE9BAC942430851600F9DEF3 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		CEB70E3D240B100A00B1D4A0 /* ConversationsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversationsListViewController.swift; path = ../ConversationsListViewController.swift; sourceTree = "<group>"; };
+		CEEAF9A7243A3F0800FBA525 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F55B676624BB19B499F5BA48 /* Pods_TinkoffChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TinkoffChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -114,7 +114,7 @@
 		CE193D7323F8993900A295F6 /* TinkoffChat */ = {
 			isa = PBXGroup;
 			children = (
-				CE8B8597242287DB0062CE20 /* GoogleService-Info.plist */,
+				CEEAF9A7243A3F0800FBA525 /* GoogleService-Info.plist */,
 				CEB70E3D240B100A00B1D4A0 /* ConversationsListViewController.swift */,
 				CE7C8C62240C2FA800EF19E3 /* ConversationViewController.swift */,
 				CE193D7423F8993900A295F6 /* AppDelegate.swift */,
@@ -236,7 +236,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE193D8423F8993A00A295F6 /* LaunchScreen.storyboard in Resources */,
-				CE8B8598242287DB0062CE20 /* GoogleService-Info.plist in Resources */,
+				CEEAF9A8243A3F0800FBA525 /* GoogleService-Info.plist in Resources */,
 				CE193D8123F8993A00A295F6 /* Assets.xcassets in Resources */,
 				CE193D7C23F8993900A295F6 /* Main.storyboard in Resources */,
 			);
@@ -497,7 +497,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ru.tcsbank.TinkoffChat;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.tinkoff.messenger;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -519,7 +519,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ru.tcsbank.TinkoffChat;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.tinkoff.messenger;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

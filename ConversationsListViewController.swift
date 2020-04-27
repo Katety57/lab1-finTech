@@ -8,60 +8,33 @@
 
 import UIKit
 import Firebase
+import CoreData
 
 private let reuseIdentifier: String = "conversationCell"
 
-struct Channel {
-    var identifier: String
-    var name: String
-    var lastMessage: String
-}
-
-struct Message {
-    var content: String
-    var created: Date
-    var senderId: String
-    var sennderName: String
-}
+//class Channel: NSManagedObject{
+//    var name: String?
+//    var lastMessage: String?
+//    var id: String?
+//    var lastActivity: Date?
+//}
 
 class ConversationsListViewController: UITableViewController {
-    
-    struct ConversationCell {
-        let name: String
-        let message: String
-        let date: Date
-        let isOnline: Bool
-        let hasUnreadMessage: Bool
-    }
     
     private lazy var db = Firestore.firestore()
     private lazy var ref = db.collection("channels")
     
-    var array: [[ConversationCell]] = [
-        [ConversationCell(name: "Ari", message: "Hello", date: Date(), isOnline: true, hasUnreadMessage: true),
-         ConversationCell(name: "Charlie", message: "We don't talk anymore", date: Date.init(timeIntervalSinceNow: -86400), isOnline: true, hasUnreadMessage: false),
-         ConversationCell(name: "Ed", message: "I don't care", date: Date.init(timeIntervalSinceReferenceDate: 86400), isOnline: true, hasUnreadMessage: true),
-         ConversationCell(name: "Justin", message: "", date: Date.init(timeIntervalSinceReferenceDate: 100000), isOnline: true, hasUnreadMessage: false),
-         ConversationCell(name: "Camila", message: "Morning", date: Date.init(timeIntervalSinceNow: -100000), isOnline: true, hasUnreadMessage: true),
-         ConversationCell(name: "Cardi", message: "South of the border", date: Date.init(timeIntervalSinceNow: -400), isOnline: true, hasUnreadMessage: false),
-         ConversationCell(name: "Shawn", message: "There is nothing holding me back,nothing holding me back,nothing holding me back,nothing holding me back,nothing holding me back,nothing holding me back", date: Date.init(timeIntervalSinceNow: -6400), isOnline: true, hasUnreadMessage: false),
-         ConversationCell(name: "Lauv", message: "Feelings", date: Date(), isOnline: true, hasUnreadMessage: true),
-         ConversationCell(name: "Sam", message: "Dancing with a stranger", date: Date(), isOnline: true, hasUnreadMessage: true),
-         ConversationCell(name: "Nicki", message: "", date: Date.init(timeIntervalSinceReferenceDate: 700000), isOnline: true, hasUnreadMessage: false)],
-        
-        [ConversationCell(name: "Ari", message: "Hello", date: Date(), isOnline: false, hasUnreadMessage: true),
-        ConversationCell(name: "Charlie", message: "We don't talk anymore", date: Date.init(timeIntervalSinceNow: -86400), isOnline: false, hasUnreadMessage: false),
-        ConversationCell(name: "Ed", message: "I don't care", date: Date.init(timeIntervalSinceReferenceDate: 86400), isOnline: false, hasUnreadMessage: true),
-        ConversationCell(name: "Justin", message: "", date: Date.init(timeIntervalSinceReferenceDate: 100000), isOnline: false, hasUnreadMessage: false),
-        ConversationCell(name: "Camila", message: "Morning", date: Date.init(timeIntervalSinceNow: -100000), isOnline: false, hasUnreadMessage: true),
-        ConversationCell(name: "Cardi", message: "South of the border", date: Date.init(timeIntervalSinceNow: -400), isOnline: false, hasUnreadMessage: false),
-        ConversationCell(name: "Shawn", message: "There is nothing holding me back", date: Date.init(timeIntervalSinceNow: -6400), isOnline: false, hasUnreadMessage: false),
-        ConversationCell(name: "Lauv", message: "Feelings", date: Date(), isOnline: false, hasUnreadMessage: true),
-        ConversationCell(name: "Sam", message: "Dancing with a stranger", date: Date(), isOnline: false, hasUnreadMessage: true),
-        ConversationCell(name: "Nicki", message: "", date: Date.init(timeIntervalSinceReferenceDate: 700000), isOnline: false, hasUnreadMessage: false)]
-    ]
-    var selectedConversation: Channel?
+    lazy var fetchedResultController: NSFetchedResultsController<Channel> = {
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Channel")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "lastActivity", ascending: false)]
+        fetchRequest.fetchBatchSize = 20
+        let context = StorageManager.sharedManager.context
+        let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: "Channels")
+        return frc as! NSFetchedResultsController<Channel>
+    }()
     
+    var selectedConversation: Channel?
+    var conversationDestination: ConversationViewController?
 }
 
 // MARK - UITableViewdelegate, datasource
@@ -75,73 +48,88 @@ extension ConversationsListViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
-    
-    func divTwo(cell: ConversationCell){
-        cell.isOnline ? array[0].append(cell) : array[1].append(cell)
+        return fetchedResultController.sections?.count ?? 0
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return array[section].count
+        if let count = fetchedResultController.sections?[section].numberOfObjects {
+            return count
+        }
+        return 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell: DialogTableViewCell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier) as? DialogTableViewCell else { return UITableViewCell()}
+        let channel = fetchedResultController.object(at: indexPath) as Channel
         
-        cell.backgroundColor = array[indexPath.section][indexPath.row].isOnline ? UIColor(red: 1, green: 0.9882, blue: 0.749, alpha: 1.0) : UIColor.white
+//        cell.backgroundColor = array[indexPath.section][indexPath.row].isOnline ? UIColor(red: 1, green: 0.9882, blue: 0.749, alpha: 1.0) : UIColor.white
         
-        cell.nameLabel.text = array[indexPath.section][indexPath.row].name
-        cell.messageLabel.text = array[indexPath.section][indexPath.row].message.isEmpty ? "No message yet" : array[indexPath.section][indexPath.row].message
-
-        array[indexPath.section][indexPath.row].hasUnreadMessage ? cell.messageLabel.font = UIFont.boldSystemFont(ofSize: 18.0) : cell.noMsg(flag: array[indexPath.section][indexPath.row].isOnline)
+        cell.nameLabel.text = channel.name
+//        print("SECOND:   ",channels[indexPath.row].value(forKey: "name"))
+        cell.messageLabel.text = channel.lastMessage
         
-        
-        var calendar = Calendar.current
-        if let timeZone = TimeZone(identifier: "EST") {
-            calendar.timeZone = timeZone
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        if let activity = channel.lastActivity {
+            cell.dateLabel.text = formatter.string(from: activity)
         }
-        let hour = calendar.component(.hour, from: array[indexPath.section][indexPath.row].date)
-        let minute = calendar.component(.minute, from: array[indexPath.section][indexPath.row].date)
-        cell.dateLabel.text = "\(hour):\(minute)"
-        
-        //cell.onlineLabel.text = array[indexPath.row].isOnline ? "Online" : "Offline"
-//        cell.textLabel?.text = "Cell Text"
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section == 0 ? "Online" : "History"
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedConversation = fetchedResultController.object(at: indexPath)
+        performSegue(withIdentifier: "showConversation", sender: nil)
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //selectedConversation = array[indexPath.section][indexPath.row]
-        performSegue(withIdentifier: "showConversation", sender: nil)
+//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == .delete {
+//            let channel = fetchedResultController.object(at: indexPath)
+//            StorageManager.sharedManager.context.delete(channel)
+//            tableView.deleteRows(at: [indexPath], with: .bottom)
+//        }
+//    }
+    
+    override func performSegue(withIdentifier identifier: String, sender: Any?) {
+        if identifier == "showConversation" {
+            conversationDestination?.selectedConversation = selectedConversation
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showConversation" {
-            let conversation = segue.destination as! ConversationViewController
-            conversation.channel = selectedConversation
-//                conversation.channel = Channel(identifier: "71832579854", name: "", lastMessage: "")
-                
-            }
+            conversationDestination = segue.destination as? ConversationViewController
         }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        //getDialog()
     }
     
-    func getDialog(){
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        getChannel()
+    }
+    
+    func getChannel(){
         ref.addSnapshotListener{ [weak self] snapshot, error in
             if let s = snapshot {
+                StorageManager.sharedManager.deleteAllData(entity: "Channel")
                 for document in s.documents {
-                    let a = Array(document.data().values)
-                        print(a)
-//                    self?.selectedConversation = Channel(identifier: document.documentID, name: a[2] as! String, lastMessage: a[0] as! String)
-//                    self?.array.append(channel)
+                    let activity = document.get("lastActivity") as? Timestamp
+                    if let act = activity,
+                        let message = document.get("lastMessage") as? String,
+                       let name = document.get("name") as? String, let id = document.get("identifier") as? String {
+                            if message != "", name != ""{
+                            StorageManager.sharedManager.saveContext(dictionary: ["lastActivity" : act.dateValue(),
+                                                                              "lastMessage" : message,
+                                                                              "name" : name,
+                                                                              "id" : id],
+                                                                 properties: ["lastActivity", "lastMessage", "name", "id"], entityName: "Channel")
+                        }
+                    }
                 }
-//            self?.tableView.reloadData()
+                do {
+                    try self?.fetchedResultController.performFetch()
+                    self?.tableView.reloadData()
+                } catch let err {
+                    print("Failed to fetch: ",err)
+                }
             }
         }
     }
