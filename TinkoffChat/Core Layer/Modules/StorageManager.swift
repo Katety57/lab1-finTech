@@ -13,8 +13,8 @@ import CoreData
 // MARK: - Core Data Persistent Manager
 
 protocol StorageProtocol {
-    func saveContext (username: String, bio: String, img: Data)
-    func readContext () -> NSManagedObject?
+    func saveContext (dictionary: Dictionary<String, Any>, properties: Array<String>, entityName: String)
+    func readContext (entityName: String) -> [NSManagedObject]
 }
 
 final class StorageManager: StorageProtocol {
@@ -22,13 +22,12 @@ final class StorageManager: StorageProtocol {
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
-    func saveContext(username: String, bio: String, img: Data) {
-        deleteAllData(entity: "User")
-            if let user = NSEntityDescription.entity(forEntityName: "User", in: context) {
-                let usr = NSManagedObject(entity: user, insertInto: context)
-                usr.setValue(username, forKey: "name")
-                usr.setValue(bio, forKey: "bio")
-                usr.setValue(img, forKey: "img")
+    func saveContext(dictionary: Dictionary<String, Any>, properties: Array<String>, entityName: String) {
+            if let entity = NSEntityDescription.entity(forEntityName: entityName, in: context) {
+                let e = NSManagedObject(entity: entity, insertInto: context)
+                for p in properties {
+                    e.setValue(dictionary[p], forKey: p)
+                }
                 do {
                     try context.save()
                 } catch (let error) {
@@ -37,20 +36,18 @@ final class StorageManager: StorageProtocol {
             }
     }
     
-    func readContext() -> NSManagedObject? {
-        var usr: NSManagedObject?
+    func readContext(entityName: String) -> [NSManagedObject] {
         let fetchRequest =
-          NSFetchRequest<NSManagedObject>(entityName: "User")
+          NSFetchRequest<NSManagedObject>(entityName: entityName)
+        var elems: Array<NSManagedObject> = []
         
         do {
-          let user = try context.fetch(fetchRequest)
-            for u in user {
-                usr = u
-            }
+          let entity = try context.fetch(fetchRequest)
+          elems = entity
         } catch let error as NSError {
           print("Could not fetch. \(error), \(error.userInfo)")
         }
-        return usr
+        return elems
     }
     
     func deleteAllData(entity: String)

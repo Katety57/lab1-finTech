@@ -7,13 +7,6 @@
 //
 
 import UIKit
-import CoreData
-
-class User: NSManagedObject{
-    var name: String?
-    var bio: String?
-    var img: URL?
-}
 
 class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate {
     @IBOutlet weak var cameraButton: UIButton!
@@ -42,8 +35,6 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         
         profileView()
         
-        usernameTextField.isHidden = true
-        bioEditField.isHidden = true
         bioEditField.delegate = self
         usernameTextField.addTarget(self, action: #selector(textFieldDidChange(sender:)), for: .editingChanged)
     }
@@ -90,48 +81,36 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     }
     
     @IBAction func editProfile(_ sender: Any) {
-        editorView()
+         editorView()
     }
     
     // MARK: - Navigation
     
-    func getFileURL(file: String) -> URL?{
-        if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-            let fileURL = dir.appendingPathComponent(file)
-            return fileURL
-        }
-        return nil
-    }
-    
     func profileView() {
-        editButton.isHidden = false
-        usernameTextField.isHidden = true
-        bioEditField.isHidden = true
-        username.isHidden = false
-        textDescript.isHidden = false
+        profileVw(flag: true)
         usernameIsChanged = false
         bioIsChanged = false
-        saveButton.isHidden = true
-        cameraButton.isHidden = true
-        let usr = StorageManager.sharedManager.readContext()
-        username.text = usr?.value(forKey: "name") as? String
-        textDescript.text = usr?.value(forKey: "bio") as? String
-        profileImg.image = UIImage(data: usr?.value(forKey: "img") as! Data)
+        let usr = StorageManager.sharedManager.readContext(entityName: "User")
+        username.text = usr.first?.value(forKey: "name") as? String
+        textDescript.text = usr.first?.value(forKey: "bio") as? String
+        profileImg.image = UIImage(data: usr.first?.value(forKey: "img") as! Data)
+    }
+    
+    func profileVw(flag: Bool){
+        editButton.isHidden = !flag
+        usernameTextField.isHidden = flag
+        bioEditField.isHidden = flag
+        username.isHidden = !flag
+        textDescript.isHidden = !flag
+        saveButton.isHidden = flag
+        cameraButton.isHidden = flag
     }
     
     func editorView() {
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
         
+        profileVw(flag: false)
         view.addGestureRecognizer(tap)
-        textDescript.isHidden = true
-        username.isHidden = true
-        editButton.isHidden = true
-        cameraButton.isHidden = false
-        usernameTextField.isHidden = false
-        usernameTextField.text = ""
-        bioEditField.isHidden = false
-        bioEditField.text = ""
-        saveButton.isHidden = false
         saveButton.isEnabled = false
         bioEditField.layer.borderWidth = 0.5
         bioEditField.layer.borderColor = UIColor.lightGray.cgColor
@@ -154,7 +133,11 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         queue.async {
             do{
                 if !usernameField.isEmpty && !bio.isEmpty {
-                    StorageManager.sharedManager.saveContext(username: usernameField, bio: bio, img: img)
+                    StorageManager.sharedManager.deleteAllData(entity: "User")
+                    StorageManager.sharedManager.saveContext(dictionary: ["name": usernameField,
+                                                                          "bio": bio,
+                                                                          "img": img],
+                                                             properties: ["name", "bio", "img"], entityName: "User")
                 }
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
@@ -175,13 +158,10 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
 
                         self.present(alertController, animated: true, completion: nil)
                     }
-                    self.profileView()
                     if !usernameField.isEmpty && !bio.isEmpty {
                         self.profileView()
                     }
                     self.activityIndicator.stopAnimating()
-                    self.usernameIsChanged = false
-                    self.bioIsChanged = false
                     }
                 }
             }
